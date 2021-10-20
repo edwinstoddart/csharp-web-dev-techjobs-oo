@@ -35,5 +35,59 @@ namespace TechJobsTests
 
             Assert.IsFalse(testJob1.Equals(testJob2));
         }
+
+        [TestMethod]
+        public void TestForBlankLinesSurroundingData()
+        {
+            Job testJob = new Job("name", new Employer("employerName"), new Location("employerLocation"), new PositionType("jobType"), new CoreCompetency("jobCoreCompetency"));
+            Assert.AreEqual("\n", testJob.ToString().Substring(0, 1));
+            Assert.AreEqual("\n", testJob.ToString().Substring(testJob.ToString().Length - 1));
+        }
+
+        [TestMethod]
+        public void TestIfFieldNamesAndValuesAreOnTheirOwnLines()
+        {
+            Job testJob = new Job("name", new Employer("employerName"), new Location("employerLocation"), new PositionType("jobType"), new CoreCompetency("jobCoreCompetency"));
+            Assert.AreEqual("\n" +
+                "ID: 2\n" +
+                "Name: name\n" +
+                "Employer: employerName\n" +
+                "Location: employerLocation\n" +
+                "Position Type: jobType\n" +
+                "Core Competency: jobCoreCompetency\n" +
+                "\n", testJob.ToString());
+        }
+
+        [TestMethod]
+        public void TestThatEmptyFieldsReturnDataNotAvailable()
+        {
+            Job testJob = new Job();
+            testJob.Name = "Name";
+            Assert.AreEqual("\n" +
+                "ID: 9\n" +
+                "Name: Name\n" +
+                "Employer: Data Not Available\n" +
+                "Location: Data Not Available\n" +
+                "Position Type: Data Not Available\n" +
+                "Core Competency: Data Not Available\n" +
+                "\n", testJob.ToString());
+            testJob.Name = null;
+            testJob.EmployerName = new Employer("Employer");
+            Assert.AreEqual("\n" +
+                "ID: 9\n" +
+                "Name: Data Not Available\n" +
+                "Employer: Employer\n" +
+                "Location: Data Not Available\n" +
+                "Position Type: Data Not Available\n" +
+                "Core Competency: Data Not Available\n" +
+                "\n", testJob.ToString());
+        }
+
+        [TestMethod]
+        public void TestThatAnEmptyJobReturnsOOPSThisJobDoesNotSeemToExist()
+        {
+            Job testJob = new Job();
+            Assert.AreEqual("OOPS! This job does not seem to exist.", testJob.ToString());
+        }
     }
 }
