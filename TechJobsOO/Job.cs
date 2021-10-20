@@ -48,10 +48,10 @@ namespace TechJobsOO
                 str = "\n" +
                 $"ID: {Id}\n" +
                 $"Name: {(String.IsNullOrEmpty(Name) ? "Data Not Available" : Name)}\n" +
-                $"Employer: {(EmployerName == null ? "Data Not Available" : EmployerName.Value)}\n" +
-                $"Location: {(EmployerLocation == null ? "Data Not Available" : EmployerLocation.Value)}\n" +
-                $"Position Type: {(JobType == null ? "Data Not Available" : JobType.Value)}\n" +
-                $"Core Competency: {(JobCoreCompetency == null ? "Data Not Available" : JobCoreCompetency.ToString())}\n" +
+                $"Employer: {(EmployerName != null && !String.IsNullOrEmpty(EmployerName.Value) ? EmployerName.Value : "Data Not Available")}\n" +
+                $"Location: {(EmployerLocation != null && !String.IsNullOrEmpty(EmployerLocation.Value) ? EmployerLocation.Value : "Data Not Available")}\n" +
+                $"Position Type: {(JobType != null && !String.IsNullOrEmpty(JobType.Value) ? JobType.Value : "Data Not Available")}\n" +
+                $"Core Competency: {(JobCoreCompetency != null && !String.IsNullOrEmpty(JobCoreCompetency.Value) ? JobCoreCompetency.Value : "Data Not Available")}\n" +
                 "\n";
             }
             return str;
