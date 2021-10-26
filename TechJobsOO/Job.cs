@@ -7,6 +7,7 @@ namespace TechJobsOO
         private static int nextId = 1;
 
         public string Name { get; set; }
+        public string dataNotFound = "Data Not Available";
         public Employer EmployerName { get; set; }
         public Location EmployerLocation { get; set; }
         public PositionType JobType { get; set; }
@@ -41,20 +42,31 @@ namespace TechJobsOO
         public override string ToString()
         {
             string str;
-            if (String.IsNullOrEmpty(Name) && EmployerName == null && EmployerLocation == null && JobType == null && JobCoreCompetency == null)
+            if (String.IsNullOrEmpty(Name) && !IsDataAvailable(EmployerName) && !IsDataAvailable(EmployerLocation)
+                && !IsDataAvailable(JobType) && !IsDataAvailable(JobCoreCompetency))
             {
                 str = "OOPS! This job does not seem to exist.";
             } else {
                 str = "\n" +
                 $"ID: {Id}\n" +
-                $"Name: {(String.IsNullOrEmpty(Name) ? "Data Not Available" : Name)}\n" +
-                $"Employer: {(EmployerName != null && !String.IsNullOrEmpty(EmployerName.Value) ? EmployerName.Value : "Data Not Available")}\n" +
-                $"Location: {(EmployerLocation != null && !String.IsNullOrEmpty(EmployerLocation.Value) ? EmployerLocation.Value : "Data Not Available")}\n" +
-                $"Position Type: {(JobType != null && !String.IsNullOrEmpty(JobType.Value) ? JobType.Value : "Data Not Available")}\n" +
-                $"Core Competency: {(JobCoreCompetency != null && !String.IsNullOrEmpty(JobCoreCompetency.Value) ? JobCoreCompetency.Value : "Data Not Available")}\n" +
+                $"Name: {(String.IsNullOrEmpty(Name) ? dataNotFound : Name)}\n" +
+                $"Employer: {(IsDataAvailable(EmployerName) ? EmployerName.Value : dataNotFound)}\n" +
+                $"Location: {(IsDataAvailable(EmployerLocation) ? EmployerLocation.Value : dataNotFound)}\n" +
+                $"Position Type: {(IsDataAvailable(JobType) ? JobType.Value : dataNotFound)}\n" +
+                $"Core Competency: {(IsDataAvailable(JobCoreCompetency) ? JobCoreCompetency.Value : dataNotFound)}\n" +
                 "\n";
             }
             return str;
+        }
+
+        private bool IsDataAvailable(JobField field)
+        {
+            if (field != null && !String.IsNullOrEmpty(field.Value))
+            {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

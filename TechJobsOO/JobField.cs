@@ -6,7 +6,7 @@ namespace TechJobsOO
 {
     public abstract class JobField
     {
-        public int Id { get; set; }
+        public int Id { get; }
         private int nextId =1;
         public string Value { get; set; }
 

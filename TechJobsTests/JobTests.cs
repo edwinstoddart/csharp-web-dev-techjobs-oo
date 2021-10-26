@@ -6,81 +6,83 @@ namespace TechJobsTests
     [TestClass]
     public class JobTests
     {
+        // TODO: Use [TestInitialize] to reduce redundancy in the tests.
+        Job testJob0;
+        Job testJob1;
+        Job testJob2;
+        [TestInitialize]
+        public void CreateJobObjects()
+        {
+            testJob0 = new Job();
+            testJob1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+            testJob2 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        }
+
         [TestMethod]
         public void TestSettingJobId()
         {
-            Job testJob1 = new Job();
-            Job testJob2 = new Job();
-
             Assert.AreEqual(testJob1.Id, (testJob2.Id - 1));
         }
 
         [TestMethod]
         public void TestJobConstructorSetsAllFields()
         {
-            Job testJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-
-            Assert.AreEqual("Product tester", testJob.Name);
-            Assert.AreEqual("ACME", testJob.EmployerName.Value);
-            Assert.AreEqual("Desert", testJob.EmployerLocation.Value);
-            Assert.AreEqual("Quality control", testJob.JobType.Value);
-            Assert.AreEqual("Persistence", testJob.JobCoreCompetency.ToString());
+            Assert.AreEqual("Product tester", testJob1.Name);
+            Assert.AreEqual("ACME", testJob1.EmployerName.Value);
+            Assert.AreEqual("Desert", testJob1.EmployerLocation.Value);
+            Assert.AreEqual("Quality control", testJob1.JobType.Value);
+            Assert.AreEqual("Persistence", testJob1.JobCoreCompetency.ToString());
         }
 
         [TestMethod]
-        public void TestJobsForEquality()
+        public void TestTwoSeparateJobObjectsWithSameJobFieldsForEquality()
         {
-            Job testJob1 = new Job("Same", new Employer("Identical"), new Location("Corresponding"), new PositionType("Duplicate"), new CoreCompetency("Paired"));
-            Job testJob2 = new Job("Same", new Employer("Identical"), new Location("Corresponding"), new PositionType("Duplicate"), new CoreCompetency("Paired"));
-
             Assert.IsFalse(testJob1.Equals(testJob2));
         }
 
         [TestMethod]
         public void TestForBlankLinesSurroundingData()
         {
-            Job testJob = new Job("name", new Employer("employerName"), new Location("employerLocation"), new PositionType("jobType"), new CoreCompetency("jobCoreCompetency"));
-            Assert.AreEqual("\n", testJob.ToString().Substring(0, 1));
-            Assert.AreEqual("\n", testJob.ToString().Substring(testJob.ToString().Length - 1));
+            Assert.AreEqual("\n", testJob1.ToString().Substring(0, 1));
+            Assert.AreEqual("\n", testJob1.ToString().Substring(testJob1.ToString().Length - 1));
         }
 
         [TestMethod]
         public void TestIfFieldNamesAndValuesAreOnTheirOwnLines()
         {
-            Job testJob = new Job("name", new Employer("employerName"), new Location("employerLocation"), new PositionType("jobType"), new CoreCompetency("jobCoreCompetency"));
             Assert.AreEqual("\n" +
-                "ID: 2\n" +
-                "Name: name\n" +
-                "Employer: employerName\n" +
-                "Location: employerLocation\n" +
-                "Position Type: jobType\n" +
-                "Core Competency: jobCoreCompetency\n" +
-                "\n", testJob.ToString());
+                $"ID: {testJob1.Id}\n" +
+                $"Name: {testJob1.Name}\n" +
+                $"Employer: {testJob1.EmployerName}\n" +
+                $"Location: {testJob1.EmployerLocation}\n" +
+                $"Position Type: {testJob1.JobType}\n" +
+                $"Core Competency: {testJob1.JobCoreCompetency}\n" +
+                "\n", testJob1.ToString());
         }
 
         [TestMethod]
         public void TestThatEmptyFieldsReturnDataNotAvailable()
         {
-            Job testJob = new Job();
-            testJob.Name = "Name";
+            testJob0.Name = "Name";
             Assert.AreEqual("\n" +
-                "ID: 9\n" +
-                "Name: Name\n" +
-                "Employer: Data Not Available\n" +
-                "Location: Data Not Available\n" +
-                "Position Type: Data Not Available\n" +
-                "Core Competency: Data Not Available\n" +
-                "\n", testJob.ToString());
-            testJob.Name = null;
-            testJob.EmployerName = new Employer("Employer");
+                $"ID: {testJob0.Id}\n" +
+                $"Name: {testJob0.Name}\n" +
+                $"Employer: {testJob0.dataNotFound}\n" +
+                $"Location: {testJob0.dataNotFound}\n" +
+                $"Position Type: {testJob0.dataNotFound}\n" +
+                $"Core Competency: {testJob0.dataNotFound}\n" +
+                "\n", testJob0.ToString());
+            testJob0.Name = null;
+            testJob0.EmployerName = new Employer("Employer");
             Assert.AreEqual("\n" +
-                "ID: 9\n" +
-                "Name: Data Not Available\n" +
-                "Employer: Employer\n" +
-                "Location: Data Not Available\n" +
-                "Position Type: Data Not Available\n" +
-                "Core Competency: Data Not Available\n" +
-                "\n", testJob.ToString());
+                $"ID: {testJob0.Id}\n" +
+                $"Name: {testJob0.dataNotFound}\n" +
+                $"Employer: {testJob0.EmployerName}\n" +
+                $"Location: {testJob0.dataNotFound}\n" +
+                $"Position Type: {testJob0.dataNotFound}\n" +
+                $"Core Competency: {testJob0.dataNotFound}\n" +
+                "\n", testJob0.ToString());
+            testJob0.EmployerName = null;
         }
 
         [TestMethod]
